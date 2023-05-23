@@ -2,61 +2,42 @@
 #CIS261
 #Deck of Cards
 
-from dataclasses import dataclass
 import random
-
-@dataclass
-class Card:
-    rank:str
-    suit:str
-
-    def getStr(self):
-        return f"{self.rank} of {self.suit}"
 
 class Deck:
     def __init__(self):
-        self.__deck = []
-        ranks = ("2", "3", "4", "5", "6", "7", "8", "9", "10",
-                 "Jack", "King", "Queen", "Ace")
-        suits = ("Clubs", "Diamonds", "Hearts", "Spades")
-        for rank in ranks:
-            for suit in suits:
-                self.__deck.append(Card(rank, suit))
+        self.deck = []
+        self.ranks = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King']
+        self.suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
+        self.reset()
+
+    def reset(self):
+        self.deck = [f'{rank} of {suit}' for suit in self.suits for rank in self.ranks]
 
     def shuffle(self):
-        random.shuffle(self.__deck)
+        random.shuffle(self.deck)
 
-    def dealCard(self):
-        return self.__deck.pop()
+    def deal(self):
+        if len(self.deck) == 0:
+            return None
+        return self.deck.pop()
 
     def count(self):
-        return len(self.__deck)
-    
-def main():
-    print("Card Dealer")
-    print()
+        return len(self.deck)
 
-    deck = Deck()
-    deck.shuffle()
-    print(f"I have shuffled a deck of {deck.count()} cards.")
-    print()
+# Create a deck
+deck = Deck()
 
-    count = int(input("How many cards would you like?: "))
-    print()
+# Shuffle the deck
+deck.shuffle()
 
-    print("Here are your cards:")
-    cards = []
-    for i in range(count):        
-        card = deck.dealCard()
-        print(card.getStr())
-        cards.append(card)
-    print()
+# Deal a card
+card = deck.deal()
+if card is not None:
+    print(f"Dealt card: {card}")
+else:
+    print("No more cards in the deck.")
 
-    print(f"There are {deck.count()} cards left in the deck.")
-    print()
-    
-    print("Good luck!")
-
-if __name__ == "__main__":
-    main()
-
+# Count the remaining cards
+count = deck.count()
+print(f"Remaining cards in the deck: {count}")
